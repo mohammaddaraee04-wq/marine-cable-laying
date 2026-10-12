@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دفاع پایان‌نامه کارشناسی مهندسی دریا — محمدمهدی دارائی</title>
+    <!-- MathJax for rendering math equations -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap');
+
+        :root {
+            --bg-canvas: #060b17;
+            --slide-bg: #0b152b;
+            --card-bg: #122143;
+            --card-border: #1d356d;
+            --accent-cyan: #00d2eb;
+            --accent-blue: #38bdf8;
+            --accent-gold: #fbbf24;
+            --accent-crimson: #fb7185;
+            --accent-emerald: #34d399;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            direction: rtl;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        #deck-viewport {
+            position: relative;
+            width: 96vw;
+            max-width: 1650px;
+            height: 94vh;
+            max-height: 920px;
+            background-color: var(--slide-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Academic Top Header */
+        .deck-header {
+            height: 55px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            background: linear-gradient(90deg, #0b152b, #122143);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            z-index: 10;
+        }
+
+        .badge-academic {
+            background-color: rgba(0, 210, 235, 0.15);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 210, 235, 0.35);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Slide Body Stage */
+        .slide-stage {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: calc(100% - 115px);
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 24px 36px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            overflow-y: auto;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Slide Titles */
+        .slide-title-bar {
+            margin-bottom: 16px;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slide-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 26px;
+            background: var(--accent-cyan);
+            border-radius: 4px;
+        }
+
+        .slide-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Content Container with Full Space Fill */
+        .slide-content-grid {
+            flex: 1;
+            display: grid;
+            gap: 20px;
+            align-items: stretch;
+            margin-bottom: 12px;
+        }
+
+        .grid-2col-balanced { grid-template-columns: 1fr 1fr; }
+        .grid-2col-55-45 { grid-template-columns: 55% 45%; }
+        .grid-2col-45-55 { grid-template-columns: 45% 55%; }
+        .grid-3col { grid-template-columns: repeat(3, 1fr); }
+
+        /* Academic Cards */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            text-align: justify;
+        }
+
+        .card-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #e2e8f0;
+            flex: 1;
+        }
+
+        /* Metric & Statistical Callouts */
+        .metric-banner {
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.18), rgba(18, 33, 67, 0.8));
+            border: 1.5px solid var(--accent-crimson);
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .metric-banner-gold {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.18), rgba(18, 33, 67, 0.8));
+            border: 1.5px solid var(--accent-gold);
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .metric-title { font-size: 1rem; font-weight: 700; color: #fff; }
+        .metric-value { font-size: 1.8rem; font-weight: 900; color: var(--accent-crimson); direction: ltr; }
+        .metric-value-gold { font-size: 1.8rem; font-weight: 900; color: var(--accent-gold); direction: ltr; }
+
+        ul.academic-bullets {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        ul.academic-bullets li {
+            position: relative;
+            padding-right: 20px;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+        }
+
+        ul.academic-bullets li::before {
+            content: '■';
+            position: absolute;
+            right: 0;
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            top: 2px;
+        }
+
+        .key-takeaway {
+            background: rgba(0, 210, 235, 0.08);
+            border-right: 5px solid var(--accent-cyan);
+            padding: 12px 18px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.92rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        /* Real Screenshot / Visual Box */
+        .visual-box {
+            background: #080f20;
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .visual-box img {
+            max-width: 100%;
+            max-height: 80%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .visual-caption {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Formula Panels */
+        .eq-panel {
+            background: rgba(6, 11, 23, 0.85);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 12px;
+            margin: 8px 0;
+            direction: ltr;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* Academic Tables */
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .table-custom th {
+            background-color: #172a56;
+            color: var(--accent-cyan);
+            padding: 10px 8px;
+            border: 1px solid var(--card-border);
+            font-weight: 700;
+        }
+
+        .table-custom td {
+            padding: 9px 8px;
+            border: 1px solid rgba(29, 53, 109, 0.7);
+            background-color: rgba(18, 33, 67, 0.5);
+        }
+
+        .table-custom tr:nth-child(even) td { background-color: rgba(13, 24, 49, 0.75); }
+        .table-highlight { color: var(--accent-gold); font-weight: bold; }
+
+        /* Footer Navigation Bar */
+        .deck-footer {
+            height: 60px;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            background: #081022;
+            z-index: 10;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            max-width: 450px;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            transition: width 0.3s ease;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 7px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--accent-cyan);
+            color: #060b17;
+            font-weight: bold;
+        }
+
+        .counter-badge {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            direction: ltr;
+            font-weight: 700;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        /* Hero Slide 1 */
+        .hero-title-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            gap: 22px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="deck-viewport">
+    <!-- Top Bar -->
+    <header class="deck-header">
+        <div>
+            <strong style="color: #fff;">دانشگاه صنعتی امیرکبیر (پلی‌تکنیک تهران)</strong>
+            <span style="color: var(--card-border); margin: 0 10px;">|</span>
+            <span style="color: var(--accent-cyan);">جلسه دفاع پروژه پایانی کارشناسی مهندسی دریا</span>
+        </div>
+        <div>
+            <span class="badge-academic" id="current-slide-category">مشخصات پایان‌نامه</span>
+        </div>
+    </header>
+
+    <!-- Main Stage -->
+    <main class="slide-stage">
+
+        <!-- ==========================================
+             SLIDE 1: Title Slide
+             ========================================== -->
+        <section class="slide active" id="slide-1" data-category="معرفی و عنوان">
+            <div class="hero-title-box">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="none" stroke="#00d2eb" stroke-width="2.5"/>
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+                    <polygon points="50,15 55,35 75,35 60,48 66,68 50,55 34,68 40,48 25,35 45,35" fill="rgba(0,210,235,0.25)" stroke="#00d2eb" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="14" fill="#0b152b" stroke="#fbbf24" stroke-width="2"/>
+                    <text x="50" y="55" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">AUT</text>
+                </svg>
+
+                <h1 style="font-size: 2.3rem; font-weight: 900; color: #fff; line-height: 1.5; max-width: 980px;">
+                    استخراج استانداردها و فناوری‌های نوین در حوزه کابل‌ریزی شناورها
+                </h1>
+                
+                <p style="font-size: 1.15rem; color: var(--accent-blue); font-weight: 600;">
+                    پردیس دریاساحلی — گروه مهندسی دریا
+                </p>
+
+                <div style="display: flex; gap: 60px; margin-top: 15px; border-top: 1.5px solid var(--card-border); padding-top: 25px;">
+                    <div style="text-align: right;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">نگارش دانشجو:</span>
+                        <strong style="font-size: 1.2rem; color: #fff;">محمدمهدی دارائی</strong>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">استاد راهنما:</span>
+                        <strong style="font-size: 1.2rem; color: #fff;">دکتر محمد امین فیض چکاب</strong>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">زمان دفاع:</span>
+                        <strong style="font-size: 1.2rem; color: var(--accent-gold);">شهریور ۱۴۰۵</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 2: Roadmap
+             ========================================== -->
+        <section class="slide" id="slide-2" data-category="نقشه راه دفاع">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">نقشه راه و ساختار یکپارچه ارائه</h2>
+                <span class="slide-subtitle">گام‌های شش‌گانه دفاعیه پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-3col">
+                <div class="card">
+                    <div class="card-header"><span>۱. بیان مسئله و ضرورت</span><span class="badge-academic">ریسک بیمه</span></div>
+                    <div class="card-body">
+                        تحلیل آماری خرابی‌ها، نرخ ۸۰ درصدی خسارت‌های بیمه‌ای و عدم تقارن شدید سهم ساخت در برابر ریسک عملیات کابل‌ریزی.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span>۲. مکانیک مقطع کابل</span><span class="badge-academic">MecLim II</span></div>
+                    <div class="card-body">
+                        تئوری الاستیسیته کوستلو، حل تماس چندلایه با تابع جریمه، تعیین آستانه حداقل شعاع خمش (MBR) و ضرایب تسلیم.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span>۳. دینامیک لای‌گذاری</span><span class="badge-academic">Dual-Catenary</span></div>
+                    <div class="card-body">
+                        مدل‌سازی زنجیرواره دوگانه در آب‌های کم‌عمق، رفع خطای ۵۵٪ MBR، اندرکنش امواج و مدل اوج کشش برنامه‌نویسی ژنتیک.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span>۴. پایداری بر بستر دریا</span><span class="badge-academic">COREstab</span></div>
+                    <div class="card-body">
+                        شکست آیین‌نامه DNV-RP-F109، کشف پدیده تهویه دهانه (Span Venting)، افت ۹۰٪ برآ و خوددفنی کابل در ماسه.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span>۵. پایش برخط و NDT</span><span class="badge-academic">DTS Inversion</span></div>
+                    <div class="card-body">
+                        معکوس‌سازی میدان حرارتی گذرای فیبر نوری، اثبات یکنوایی صعودی تابع $f(L)$ برای تخمین برخط عمق ترانشه دفن.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span>۶. ماتریس استانداردها</span><span class="badge-academic">ABS 2026</span></div>
+                    <div class="card-body">
+                        سنتز کدهای مرجع، ماتریس ۴ سطحی آزمون‌های صلاحیت (PQ، نوعی، روتین و سایت) و چشم‌انداز کابل‌های بدون سرب HPTE.
+                    </div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                منطق ساختاریافته پژوهش: تبیین بحران صنعتی ← حل ریاضی مقطع ← مدلسازی دینامیک نصب ← هیدرودینامیک بستر ← پایش برخط ← استانداردهای ۲۰۲۶.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 3: Problem Statement
+             ========================================== -->
+        <section class="slide" id="slide-3" data-category="بیان مسئله">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">اهمیت راهبردی و تناقض آماری خسارات بیمه</h2>
+                <span class="slide-subtitle">فصل اول — صفحات ۴ و ۱۲ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="metric-banner">
+                        <div>
+                            <div class="metric-title">سهم حوادث کابل در مطالبات بیمه فراساحل</div>
+                            <small style="color: var(--text-muted);">بزرگ‌ترین منشأ ریسک اقتصادی پروژه‌ها</small>
+                        </div>
+                        <div class="metric-value">75% - 80%</div>
+                    </div>
+
+                    <div class="metric-banner-gold">
+                        <div>
+                            <div class="metric-title">سهم کابل در کل سرمایه‌گذاری اولیه (CAPEX)</div>
+                            <small style="color: var(--text-muted);">عدم تقارن فاحش میان هزینه خرید و ریسک خرابی</small>
+                        </div>
+                        <div class="metric-value-gold">&lt; 10%</div>
+                    </div>
+
+                    <ul class="academic-bullets">
+                        <li><strong>ستون فقرات تبادلات جهانی:</strong> بیش از ۱/۴۸ میلیون کیلومتر خط فعال و انتقال فراتر از ۹۹٪ حجم ترافیک اینترنت بین‌المللی بر بستر کابل‌های نوری زیرسطحی.</li>
+                        <li><strong>شاهراه انرژی تجدیدپذیر:</strong> توسعه مزارع بادی چندگیگاواتی فراساحلی بدون کابل‌های صادراتی ناممکن است.</li>
+                        <li><strong>ابعاد خسارت توقف:</strong> هر تعمیر کابل در دریا ۱۷ روز تا ۳ ماه زمان برده؛ هزینه تعویض تا ۱/۷۱ میلیون پوند و زیان عدم‌النفع مزرعه ۲۰۰ مگاواتی بیش از ۶ میلیون پوند است.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/cable_failure_distribution.png" alt="شکل ۱-۳: توزیع درصدی خرابی کابل‌ها" onerror="this.src='cable_failure_distribution.jpg'">
+                    <div class="visual-caption">شکل ۱-۳: درصد توزیع حالت‌های خرابی کابل‌های مزارع بادی فراساحلی (فاز نصب ۴۶٪ و ساخت ۳۱٪) [Nicholls-Lee et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                ریشه بنیادین نرخ بالای حوادث: تعمیم ناموجه استانداردهای خطوط لوله صلب نفت و گاز به کابل‌های منعطف چندلایه است.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 4: Offshore Topologies
+             ========================================== -->
+        <section class="slide" id="slide-4" data-category="توپولوژی شبکه">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">توپولوژی کابل‌کشی مزارع بادی و مرز سامانه HVAC / HVDC</h2>
+                <span class="slide-subtitle">فصل اول — صفحات ۳ الی ۵ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-45-55">
+                <div class="card">
+                    <div class="card-header"><span>تفکیک عملیاتی خطوط کابل‌کشی</span><span class="badge-academic">Static vs Dynamic</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>کابل‌های بین‌آرایه‌ای پویا (Dynamic Inter-Array):</strong> اتصال توربین‌های شناور به یکدیگر و پست دریایی؛ حامل ولتاژ تا ۶۶ کیلوولت و در معرض خستگی ناشی از امواج.</li>
+                        <li><strong>کابل‌های صادراتی (Export Cables):</strong> انتقال توان تجمعی به ساحل؛ مستقر به شکل استاتیک روی بستر تا سطح ولتاژ ۵۰۰ کیلوولت.</li>
+                    </ul>
+                    <div class="eq-panel">
+                        $$\text{Distance} &gt; 80\text{ km} \implies \text{HVDC Priority (حذف تلفات اثر پوستی و خازنی)}$$
+                    </div>
+                    <p class="card-body" style="font-size: 0.88rem;">
+                        پدیده‌های اثر پوستی و اثر مجاورتی در خطوط متناوب طویل موجب تلفات اهمی و توان راکتیو شدید می‌گردند؛ لذا برای فواصل فراتر از ۸۰ کیلومتر خطوط مستقیم HVDC بهینه‌تر خواهند بود.
+                    </p>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/wind_farm_cabling.png" alt="شکل ۱-۱: طرح شماتیک پیکربندی کابل‌کشی مزارع بادی" onerror="this.src='wind_farm_cabling.png'">
+                    <div class="visual-caption">شکل ۱-۱: طرح شماتیک پیکربندی کابل‌کشی مزارع بادی شامل کابل‌های استاتیک بستر و دینامیک شناور [Nicholls-Lee et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                کابل‌های دینامیک شناور به دلیل تحمل چرخه‌های مداوم ۶ درجه آزادی موج، نیازمند طراحی ویژه مقاومت خستگی هستند.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 5: Cross-Section Architecture
+             ========================================== -->
+        <section class="slide" id="slide-5" data-category="معماری مقطع کابل">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">طراحی لایه‌های مقطع و فناوری سدهای مهار رطوبت شعاعی</h2>
+                <span class="slide-subtitle">فصل اول — صفحات ۶ الی ۹ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-45-55">
+                <div class="card">
+                    <div class="card-header"><span>فناوری هادی، عایق و سدهای رطوبت</span><span class="badge-academic">XLPE / Water Barrier</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>هادی‌های مس و آلومینیوم:</strong> مس مقطع کوچک‌تری فراهم می‌کند؛ آلومینیوم با جرم کمتر کشش لای‌گذاری را در اعماق &gt; ۳۰۰ متر تعدیل می‌نماید.</li>
+                        <li><strong>پیکربندی Milliken:</strong> عایق‌سازی سطحی دسته‌های مفتول در مقاطع &gt; ۸۰۰ میلی‌متر مربع جهت شکست اثر پوستی.</li>
+                        <li><strong>سد رطوبت خشک (Dry):</strong> غلاف یکپارچه سربی یا موج‌دار مسی/آلومینیومی؛ مهار کامل پدیده مخرب درخت‌آبی (Water Treeing).</li>
+                        <li><strong>پوشش کربن هرمتیک فیبر نوری:</strong> سد نفوذ هیدروژن جهت حذف افت سیگنال در طول‌موج‌های ۱۳۱۰ و ۱۵۵۰ نانومتر (ITU-T G.976).</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/radial_water_barriers.png" alt="شکل ۱-۲: طبقه‌بندی سدهای مهار رطوبت شعاعی" onerror="this.src='radial_water_barriers.png'">
+                    <div class="visual-caption">شکل ۱-۲: طبقه‌بندی ساختاری کابل‌های قدرت بر اساس سدهای مهار رطوبت شعاعی و فناوری عایق‌بندی [Resner & Paszkiewicz]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                طراحی‌های مرطوب (Wet) و نیمه‌مرطوب، نیازمند استفاده الزامی از عایق‌های اصلاح‌شده کندکننده درخت‌آبی (WTR-XLPE) هستند.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 6: Elasticity & Penalty Method
+             ========================================== -->
+        <section class="slide" id="slide-6" data-category="الاستیسیته مقطع">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">فرمولاسیون الاستیسیته لایه‌ها و حل تماس با تابع جریمه</h2>
+                <span class="slide-subtitle">فصل دوم — صفحات ۱۶ الی ۱۸ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-balanced">
+                <div class="card">
+                    <div class="card-header"><span>تئوری الاستیسیته اجزای استوانه‌ای پیوسته</span><span class="badge-academic">ثابت‌های لامه</span></div>
+                    <p class="card-body">فرمول‌بندی قانون هوک تعمیم‌یافته برای لایه‌های استوانه‌ای همگن و همسانگرد:</p>
+                    <div class="eq-panel">
+                        $$\lambda = \frac{E\nu}{(1+\nu)(1-2\nu)}, \quad \mu = \frac{E}{2(1+\nu)}$$
+                        $$\sigma_{ijc} = \lambda \epsilon_{kkc}\delta_{ij} + 2\mu \epsilon_{ijc}$$
+                    </div>
+                    <p class="card-body">انرژی پتانسیل کرنش استوانه ($\Pi_{cu}$) و کار بارهای خارجی فشار، کشش $F$ و گشتاور $T$ ($\Pi_{cw}$):</p>
+                    <div class="eq-panel">
+                        $$\Pi_{cu} = \frac{1}{2}\int_V (\sigma_{1c}\epsilon_{1c} + \sigma_{2c}\epsilon_{2c} + \sigma_{3c}\epsilon_{3c} + \sigma_{13c}\epsilon_{13c}) \, dV$$
+                        $$\Pi_{cw} = P_{ic}\Delta V_{ic} - P_{oc}\Delta V_{oc} + F u_{zc} + T u_{\theta c}$$
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>حل تماس غیرخطی با تابع جریمه مرزی</span><span class="badge-academic">Penalty Method</span></div>
+                    <p class="card-body">اعمال قیود سازگاری جابه‌جایی و تعادل فشار میان لایه‌ها در اصل کار مجازی بدون افزایش درجات آزادی:</p>
+                    <div class="eq-panel">
+                        $$\Pi_{p1} = \sum_{j=1}^{m-1} \left[ \omega_{ju}(u_{jRo} - u_{(j+1)Ri})^2 + \omega_{jp}(P_{jo} - P_{(j+1)i})^2 \right]$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>پایداری ماتریس سختی:</strong> تضمین تقارن و معین مثبت بودن ماتریس سختی سیستم چندلایه.</li>
+                        <li><strong>مدل‌سازی عددی در Abaqus:</strong> مش‌بندی با المان‌های سه‌بعدی پیوسته هشت‌گرهی C3D8R با انتگرال‌گیری کاهشی جهت مهار قفل‌شدگی حجمی پلیمرها.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                روش جریمه مرزی تقارن و پایداری عددی ماتریس سختی کل دستگاه را در شرایط تماس پیچیده چندلایه حفظ می‌نماید.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 7: Costello Theory & Birdcaging
+             ========================================== -->
+        <section class="slide" id="slide-7" data-category="مکانیک زره">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">اندرکنش کشش-پیچش زره و کمانش قفس پرنده‌ای</h2>
+                <span class="slide-subtitle">فصل دوم — صفحات ۱۸ الی ۲۰ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="card-header"><span>تئوری میله‌های باریک الاستیک کوستلو</span><span class="badge-academic">Costello / Knapp</span></div>
+                    <div class="eq-panel">
+                        $$\epsilon_1 = \frac{u_z}{L}\cos^2 \alpha + \frac{u_R}{R}\sin^2 \alpha + R\frac{u_\theta}{L}\sin\alpha \cos\alpha$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>سهم باربری زره:</strong> لایه‌های زره بیش از ۵۰٪ بار کششی طولی کل کابل را تحمل می‌کنند (افت ۵۳/۱۸٪ سختی کششی با حذف زره).</li>
+                        <li><strong>آستانه بحرانی لغزش زره:</strong> در زاویه واپیچش $\theta_{\text{cr}} = 0.00027\text{ rad/mm}$ لغزش ناگهانی میان‌لایه‌ای آغاز شده و صلبیت پیچشی به شدت افت می‌کند.</li>
+                        <li><strong>مکانیسم کمانش قفس پرنده‌ای (Birdcaging):</strong> اعمال گشتاور پادساعتگرد خلاف جهت پیچش زره $\implies$ ایجاد نیروی فشاری محوری در مفتول‌ها $\implies$ کمانش ناگهانی رو به خارج به دلیل قید تماسی یک‌طرفه با غلاف.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/twist_torque_fang.png" alt="شکل ۲-۱: رابطه پیچش-گشتاور کابل" onerror="this.src='twist_torque_fang.png'">
+                    <div class="visual-caption">شکل ۲-۱: رابطه پیچش-گشتاور کابل و کشف آستانه بحرانی لغزش زره [Fang et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                عبور زاویه واپیچش از آستانه $0.00027\text{ rad/mm}$، کابل را در معرض لغزش لایه‌ها و کمانش شعاعی Birdcaging قرار می‌دهد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 8: Safe Mechanical Limits
+             ========================================== -->
+        <section class="slide" id="slide-8" data-category="محدودیت‌های ایمن">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">معیارهای تعیین حدود مکانیکی ایمن بر پایه MecLim II</h2>
+                <span class="slide-subtitle">فصل دوم — صفحات ۲۲ الی ۲۵ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-3col">
+                <div class="card">
+                    <div class="card-header"><span>حداقل شعاع خمش مجاز</span><span class="badge-academic">MBR Limits</span></div>
+                    <div class="eq-panel">
+                        $$\epsilon_{\max} = \frac{d_{\mathrm{comp}}}{2R_{\mathrm{act}}}$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>رد قاعده سنتی:</strong> منسوخ شدن ضریب تجربی ۱۵ برابر قطر خارجی ($15\times OD$) به دلیل نادیده گرفتن اندرکنش اصطکاکی میان لایه‌ها.</li>
+                        <li><strong>معیار مجاز کرنش:</strong> استخراج بر پایه بحرانی‌ترین جزء داخلی (غلاف سربی یا عایق XLPE) طبق CIGRÉ TB 623.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>فشار دیواره جانبی</span><span class="badge-academic">SWP Crush Load</span></div>
+                    <div class="eq-panel">
+                        $$SWP = \frac{T_{\mathrm{eff}}}{R_{\mathrm{chute}}}$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>مخاطره لهیدگی:</strong> تمرکز فشار شعاعی بر روی ناودانی پاشنه شناور و غلطک‌های کشنده کاترپیلار.</li>
+                        <li><strong>پیامد بار مازاد:</strong> بیضی‌شدگی دائمی مقطع و فرورفتگی برگشت‌ناپذیر مفتول‌های زره در لایه‌های عایقی زیرین.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>مقاومت ضربه‌ای بستر</span><span class="badge-academic">Impact Test</span></div>
+                    <div class="eq-panel">
+                        $$E_{\mathrm{impact}} = m \cdot g \cdot h_{\mathrm{drop}} \ge 200\text{ J}$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>سقوط وزنه گوه‌ای:</strong> پرتابه با زاویه ۹۰ درجه مطابق استاندارد CIGRÉ TB 623.</li>
+                        <li><strong>معیار سلامت نوری:</strong> تضمین عدم بروز تغییر شکل پلاستیک در تیوب‌های استیل دربرگیرنده فیبرهای نوری.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                استخراج روابط تحلیلی MBR و SWP مانع از فرورفتگی زره در عایق و لهیدگی تیوب‌های فیبر نوری حین کابل‌ریزی می‌شود.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 9: Limit State Design & Utilization
+             ========================================== -->
+        <section class="slide" id="slide-9" data-category="حالت‌های حدی">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">فلسفه طراحی بر اساس حالت‌های حدی و ضرایب بهره‌برداری</h2>
+                <span class="slide-subtitle">فصل دوم — صفحات ۲۵ الی ۲۷ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="card-header"><span>ضرایب بهره‌برداری مجاز تسلیم (جدول ۲-۱ پایان‌نامه)</span><span class="badge-academic">MecLim II / ABS 2026</span></div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>فاز چرخه حیات کابل</th>
+                                <th>مفتول‌های زره فولادی</th>
+                                <th>سایر اجزا (هادی، عایق، غلاف)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>کارکرد عادی (Normal Operation)</td>
+                                <td class="table-highlight">۰٫۶۷</td>
+                                <td>۰٫۸۰</td>
+                            </tr>
+                            <tr>
+                                <td>عملیات نصب، بارگیری و ترابری</td>
+                                <td class="table-highlight">۰٫۷۸</td>
+                                <td>۱٫۰۰ (Load) / ۰٫۷۵ (Disp)</td>
+                            </tr>
+                            <tr>
+                                <td>کارکرد غیرعادی و بارهای تصادفی (ALS)</td>
+                                <td class="table-highlight">۱٫۰۰</td>
+                                <td>۱٫۰۰</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="card-header" style="margin-top: 10px;"><span>طراحی خستگی اجزا (منحنی‌های S-N استاندارد DNV-RP-C203)</span></div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>جزء سازه‌ای</th>
+                                <th>منحنی مرجع</th>
+                                <th>$\log(a)$</th>
+                                <th>شیب منحنی $m$</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>سیم‌های زره فولادی</td>
+                                <td>DNV B1 Curve</td>
+                                <td>۱۴٫۹۱۷ ($N \le 10^6$) / ۱۷٫۱۴۶</td>
+                                <td>۴ / ۵</td>
+                            </tr>
+                            <tr>
+                                <td>هادی مسی</td>
+                                <td>--</td>
+                                <td>۱۲٫۷۵</td>
+                                <td>۳٫۷۵</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>تحلیل خستگی کابل‌های دینامیک (FLS)</span><span class="badge-academic">Fatigue Criteria</span></div>
+                    <div class="metric-banner-gold">
+                        <div>
+                            <div class="metric-title">حداقل ضریب ایمنی خستگی مکانیکی</div>
+                            <small style="color: var(--text-muted);">الزام استاندارد ABS 2026 و API 17E</small>
+                        </div>
+                        <div class="metric-value-gold">$\ge 10$</div>
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>قاعده انباشت آسیب پالمگرن-ماینر:</strong> تحلیل چرخه‌های تنش خمش و کشش ناشی از امواج اقیانوسی.</li>
+                        <li><strong>حساسیت غلاف سربی:</strong> سرب به دلیل رفتار الاستوپلاستیک نرم، مستعدترین عضو در برابر خستگی کم‌چرخه است.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                ضریب بهره‌برداری زره در فاز نصب حداکثر ۰/۷۸ و ضریب ایمنی خستگی مکانیکی باید حداقل ۱۰ برابر عمر طراحی باشد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 10: Laying Methods & Machinery
+             ========================================== -->
+        <section class="slide" id="slide-10" data-category="روش‌های لای‌گذاری">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">ارزیابی روش‌های لای‌گذاری افقی، عمودی و تجهیزات عرشه</h2>
+                <span class="slide-subtitle">فصل سوم — صفحات ۳۱ الی ۳۲ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-balanced">
+                <div class="card">
+                    <div class="card-header"><span>مقایسه روش‌های نصب کابل</span><span class="badge-academic">S-Lay vs J-Lay</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>لای‌گذاری افقی (S-Lay):</strong> کابل از کاروسل باز شده و با گذر از روی ناودانی پاشنه، دو انحنای معکوس را تجربه می‌کند؛ مناسب آب‌های کم‌عمق تا متوسط اما حساس به نوسانات قائم پاشنه شناور.</li>
+                        <li><strong>لای‌گذاری عمودی (J-Lay):</strong> خروج کابل با زاویه نزدیک ۹۰ درجه؛ حذف انحنای بالایی در پاشنه و تنها یک انحنا در نقطه تماس بستر؛ اختصاصی آب‌های عمیق و فوق‌عمیق.</li>
+                        <li><strong>چالش آب‌های عمیق:</strong> افزایش تصاعدی کشش استاتیکی و احتمال تجاوز نیروی فشرده‌سازی تنشنرهای خطی از آستانه بار خردایش مقطع.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>فناوری‌های مدرن عرشه شناور</span><span class="badge-academic">ABS 2026 / Section 5</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>چرخ‌های بزرگ کَپستَن (Capstan):</strong> قطر فراتر از ۵ متر؛ مهار بخش عمده کشش محوری بدون نیاز به فشارهای شعاعی خردکننده موضعی تنشنرها.</li>
+                        <li><strong>چاهک میانی مون‌پول (Moonpool):</strong> خروج کابل از مرکز ثقل شناور جهت خنثی‌سازی شدید اثر حرکات پیچ و رول شناور.</li>
+                        <li><strong>سامانه موقعیت‌یابی پویا (DP):</strong> الزام کلاس‌های DP2/DP3 مطابق با راهنمای بین‌المللی IMO MSC.1/Circ.1580 جهت حفظ کشش افقی بستر.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                در آب‌های عمیق، استفاده از چرخ‌های کَپستَن با قطر بیش از ۵ متر و چاهک مون‌پول شناور، خطر خردایش کابل را برطرف می‌سازد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 11: HDD Shore Landing
+             ========================================== -->
+        <section class="slide" id="slide-11" data-category="اتصال ساحلی">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">تحلیل عددی عبور ساحلی به روش حفاری جهت‌دار افقی (HDD)</h2>
+                <span class="slide-subtitle">فصل سوم — صفحات ۳۲ الی ۳۴ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="card-header"><span>پاسخ زمانی سه‌مرحله‌ای کشش معکوس کابل</span><span class="badge-academic">Pullback Mechanics</span></div>
+                    <div class="eq-panel">
+                        $$T = T_1 + W \cdot k_c \cdot L, \quad k_c \approx 0.35\text{ (ضریب اصطکاک کابل با جداره لوله HDPE)}$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>فاز اول:</strong> کشش اندک اولیه ناشی از وزن معلق در حوضچه خروجی آب دریا.</li>
+                        <li><strong>فاز دوم:</strong> افزایش کاملاً خطی کشش متناسب با انباشت اصطکاک در بخش افقی مجرا.</li>
+                        <li><strong>فاز سوم (بحرانی):</strong> جهش غیرخطی شدید کشش در قوس خروجی به سمت دکل خشکی به علت ترکیب بارهای خمشی و تماس شعاعی.</li>
+                        <li><strong>محدودیت زاویه ورود مجرا ($\varphi$):</strong> افزایش زاویه به بیش از ۳۰ درجه موجب قفل‌شدگی مکانیکی می‌شود؛ لزوم کنترل طراحی به $\varphi &lt; 35^\circ$.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/hdd_pullback_lengths.png" alt="شکل ۳-۱: کشش در طول‌های مختلف حفاری HDD" onerror="this.src='hdd_pullback_lengths.png'">
+                    <div class="visual-caption">شکل ۳-۱: تاریخچه زمانی کشش معکوس کابل در طول‌ها و زوایای مختلف حفاری جهت‌دار افقی [Qian et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                بحرانی‌ترین جهش کشش معکوس HDD در قوس انتهایی رخ داده و زاویه ورود مجرا باید زیر ۳۵ درجه محدود گردد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 12: Dual-Catenary Model
+             ========================================== -->
+        <section class="slide" id="slide-12" data-category="نوآوری تحلیلی">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">فرمولاسیون ریاضی زنجیرواره دوگانه (Dual-Catenary)</h2>
+                <span class="slide-subtitle">فصل سوم — صفحات ۳۵ الی ۳۷ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="metric-banner">
+                        <div>
+                            <div class="metric-title">خطای مدل سنتی در تعیین شعاع خمش مجاز (MBR) بستر</div>
+                            <small style="color: var(--text-muted);">ناشی از نادیده گرفتن قطعه معلق کابل در هوا در آب‌های کم‌عمق</small>
+                        </div>
+                        <div class="metric-value">55.46%</div>
+                    </div>
+
+                    <div class="card-header"><span>روابط پیوستگی مرزی در تراز سطح آب دریا ($y = D$)</span></div>
+                    <div class="eq-panel">
+                        $$x_1 = \frac{H}{q_1} \operatorname{arccosh}\left(\frac{D \cdot q_1}{H} + 1\right), \quad V' = H \sinh\left(\frac{q_1 x_1}{H}\right)$$
+                        $$\tan\theta = \sinh\left(\frac{q_2 x'_2}{H}\right), \quad \text{انحراف زاویه پاشنه: } 12.52\%$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>نوآوری مدل:</strong> تفکیک کابل به سگمنت غوطه‌ور در آب ($q_1$) و سگمنت در هوا ($q_2$) با گره پیوستگی مرزی تعادلی در تراز سطح آب.</li>
+                        <li><strong>اهمیت عملیاتی:</strong> در بارج‌های مستقر در عمق ۳ متری، کابل خارج از آب سهم زیادی از زنجیرواره را تشکیل می‌دهد و مدل‌های تک‌منحنی همگن دچار خطای فاحش می‌شوند.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/dual_catenary_concept.png" alt="شکل ۳-۲: طرح زنجیرواره دوگانه" onerror="this.src='dual_catenary_concept.png'">
+                    <div class="visual-caption">شکل ۳-۲: پیکربندی هندسی و حل ریاضی زنجیرواره دوگانه در آب‌های کم‌عمق [Mamatsopoulos et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                فرمولاسیون زنجیرواره دوگانه خطای بحرانی ۵۵/۴۶ درصدی در محاسبه حداقل شعاع خمش در نقطه برخورد با بستر (TDZ) را برطرف ساخت.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 13: Wave Dynamics & GP
+             ========================================== -->
+        <section class="slide" id="slide-13" data-category="دینامیک امواج">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">پاسخ دینامیکی به امواج و مدل تجربی برنامه‌نویسی ژنتیک</h2>
+                <span class="slide-subtitle">فصل سوم — صفحات ۳۸ الی ۴۰ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="card-header"><span>رابطه تجربی اوج کشش برنامه‌نویسی ژنتیک (GP)</span><span class="badge-academic">Genetic Programming</span></div>
+                    <div class="eq-panel">
+                        $$T_{\mathrm{peak}} = 0.05 w \sqrt{H} + 2.85 \sqrt{\frac{h}{H}} - 0.004 \beta - 2.8$$
+                    </div>
+                    <div class="metric-banner-gold">
+                        <div>
+                            <div class="metric-title">میانگین خطای نسبی مطلق در مقایسه با OrcaFlex</div>
+                            <small style="color: var(--text-muted);">اعتبارسنجی با شبیه‌سازی دینامیکی کامل در دامنه زمان</small>
+                        </div>
+                        <div class="metric-value-gold">4.51%</div>
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>جفت‌شدگی حرکات پاشنه شناور:</strong> محاسبه شتاب قائم $b_{\max} = \frac{h}{2} (\frac{2\pi}{P})^2$ تحت اندرکنش شش درجه آزادی هیپ، پیچ و رول.</li>
+                        <li><strong>بارهای پویای هیدرودینامیکی:</strong> برهم‌نهی مؤلفه اینرسی جرم افزوده آب ($D_I$) و نیروی پسای هیدرودینامیکی موریسون ($D_D$).</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/gp_vs_numerical_shen.png" alt="شکل ۳-۳: اعتبارسنجی مدل GP در برابر OrcaFlex" onerror="this.src='gp_vs_numerical_shen.png'">
+                    <div class="visual-caption">شکل ۳-۳: اعتبارسنجی مقادیر بیشینه کشش لای‌گذاری مدل GP در برابر حل عددی OrcaFlex [Shen et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                فرمول تجربی برنامه‌نویسی ژنتیک با خطای ۴/۵۱٪، ابزاری بلادرنگ جهت پایش ایمن اوج کشش در کابین شناور است.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 14: Seabed Stability (COREstab)
+             ========================================== -->
+        <section class="slide" id="slide-14" data-category="پایداری بستر">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">هیدرودینامیک بستر: شکست DNV-RP-F109 و متدولوژی COREstab</h2>
+                <span class="slide-subtitle">فصل چهارم — صفحات ۴۳ الی ۴۵ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="metric-banner">
+                        <div>
+                            <div class="metric-title">افت نیروی برآ (Lift Force) در پدیده تهویه دهانه</div>
+                            <small style="color: var(--text-muted);">ناشی از عبور سیال از زیر دهانه‌های معلق ریز صخره‌ای</small>
+                        </div>
+                        <div class="metric-value">&gt; 90%</div>
+                    </div>
+
+                    <div class="card-header"><span>ناکارآمدی آیین‌نامه خط لوله DNV-RP-F109</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>طلب چگالی ناممکن:</strong> فرمول‌های F109 چگالی نسبی فراتر از ۱۴ را برای پایداری کابل طلب می‌کنند که حتی از چگالی سرب خالص (۱۱/۳) فراتر و غیرممکن است.</li>
+                        <li><strong>علت شکست:</strong> کابل قطر کوچکی دارد و کاملاً درون زیرلایه لایه مرزی بستر قرار می‌گیرد ($KC &gt; 50$).</li>
+                    </ul>
+
+                    <div class="card-header" style="margin-top: 6px;"><span>پدیده تهویه دهانه (Span Venting) در COREstab</span></div>
+                    <ul class="academic-bullets">
+                        <li>کاهش بیش از ۹۰٪ نیروی برآ، افت نزدیک به ۳۰٪ نیروی پسا و افزایش ۷۰٪ مقاومت اصطکاکی با گیرداری هندسی در شیارهای سنگی.</li>
+                        <li><strong>پروژه جذرومدی MeyGen:</strong> اثبات پایداری با چگالی واقعی ۳/۳۴ با ضریب ایمنی ۳/۱ تا ۵/۱ بدون نیاز به سنگ‌ریزی.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/span_venting_rough_bed.png" alt="شکل ۴-۱: پدیده تهویه دهانه در بستر صخره‌ای" onerror="this.src='span_venting_rough_bed.png'">
+                    <div class="visual-caption">شکل ۴-۱: مشاهده میدانی تشکیل دهانه‌های معلق ریز و پدیده تهویه دهانه (Span Venting) در پروژه MeyGen [Griffiths et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                متدولوژی COREstab اثبات کرد پدیده تهویه دهانه نیاز به عملیات پرهزینه سنگ‌ریزی بر بسترهای صخره‌ای را منتفی می‌سازد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 15: Sand Seabed & Protection
+             ========================================== -->
+        <section class="slide" id="slide-15" data-category="حفاظت فیزیکی">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">پایداری در بستر ماسه‌ای (STABLEpipe) و روش‌های حفاظت کابل</h2>
+                <span class="slide-subtitle">فصل چهارم — صفحات ۴۴ الی ۴۷ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-balanced">
+                <div class="card">
+                    <div class="card-header"><span>خوددفنی کابل در بستر ماسه‌ای (STABLEpipe)</span><span class="badge-academic">Self-Burial</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>فرسایش موضعی سریع:</strong> جریان‌های ملایم اولیه به دلیل قطر کوچک کابل، رسوبات زیر سازه را فرسایش می‌دهند.</li>
+                        <li><strong>فرونشست در شیار ماسه‌ای:</strong> کابل در کمتر از چند ده دقیقه به طور خودکار به درون شیار ایجادشده فرومی‌رود.</li>
+                        <li><strong>ابطال فرضیه بستر مسطح:</strong> کابل پیش از رسیدن طوفان به پیک انرژی، در رسوبات مدفون گشته و از حوزه مستقیم امواج خارج می‌شود.</li>
+                    </ul>
+                    <div class="card-header" style="margin-top: 10px;"><span>تجهیزات حفر ترانشه</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>جت آب پرفشار (Jetting):</strong> روان‌گرایی موضعی در ماسه‌ها و رس‌های نرم.</li>
+                        <li><strong>گاوآهن مکانیکی (Plough):</strong> برش شیار در رسوبات سخت و خاک‌های چسبنده.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>موازنه عمق ترانشه و سامانه‌های ثانویه</span><span class="badge-academic">Thermal vs Mechanical</span></div>
+                    <div class="metric-banner-gold">
+                        <div>
+                            <div class="metric-title">بازه بهینه عمق دفن ترانشه</div>
+                            <small style="color: var(--text-muted);">تعادل میان ایمنی مکانیکی و دفع حرارت</small>
+                        </div>
+                        <div class="metric-value-gold">1.0 - 4.0 m</div>
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>چالش حرارتی خاک:</strong> افزایش عمق دفن مقاومت حرارتی پیرامونی را افزایش داده و مانع خنک‌کاری کابل می‌شود $\implies$ اجبار به کاهش جریان مجاز الکتریکی.</li>
+                        <li><strong>محافظ‌های مفصلی چدنی:</strong> افزایش وزن خطی و مقاومت ضربه‌ای مجهز به آند فداشونده روی ضدخوردگی گالوانیکی.</li>
+                        <li><strong>تشک‌های بتنی منعطف:</strong> ایجاد حائل سنگین در تقاطع با خطوط لوله متقاطع طبق استاندارد IMCA D 042.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                تعیین عمق ترانشه مستلزم موازنه‌ای ظریف میان محافظت در برابر لنگرها و ظرفیت انتقال حرارت عایق کابل است.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 16: DTS Fiber Inversion
+             ========================================== -->
+        <section class="slide" id="slide-16" data-category="پایش برخط">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">پایش برخط عمق دفن کابل با حسگر حرارتی فیبر نوری (DTS)</h2>
+                <span class="slide-subtitle">فصل چهارم — صفحات ۴۸ الی ۴۹ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="card-header"><span>الگوریتم معکوس‌سازی میدان حرارتی گذرا (IEC 60853-2)</span><span class="badge-academic">Raman DTS</span></div>
+                    <p class="card-body">معادله افزایش دمای پوسته کابل نسبت به بستر بر پایه انتگرال نمایی $-Ei(-x)$:</p>
+                    <div class="eq-panel">
+                        $$\theta_e(t) = \frac{\rho_T W}{4\pi} \left[ -Ei\left(-\frac{D_e^2}{16t\delta}\right) + Ei\left(-\frac{L^2}{t\delta}\right) + \sum \dots \right]$$
+                    </div>
+                    <p class="card-body">بسط ریاضی ترم‌های وابسته به عمق ترانشه $L$ در قالب تابع تحلیلی $f(L)$:</p>
+                    <div class="eq-panel">
+                        $$f(L) = 2 \ln\left(\frac{4L}{D_e}\right) + \sum_{n=1}^{\infty} \frac{\left(-\frac{L^2}{t\delta}\right)^n - \left(-\frac{D_e^2}{16t\delta}\right)^n}{n(n!)}$$
+                    </div>
+                    <ul class="academic-bullets">
+                        <li><strong>اثبات ریاضی یکتایی جواب:</strong> رفتار اکیداً صعودی و یکنوای $f(L)$ در بازه عمق‌های ۰/۰۵ تا ۱۰ متر اثبات می‌کند به ازای هر دمای ثبت‌شده، تنها یک عمق فیزیکی منحصربه‌فرد وجود دارد.</li>
+                        <li><strong>حل برخط:</strong> پیاده‌سازی روش تکرار نیوتن-رافسون جهت تخمین بلادرنگ عمق ترانشه بدون نیاز به بازرسی فیزیکی با سونار جانبی.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/trend_fL_li.png" alt="شکل ۴-۲: رفتار صعودی یکنواخت تابع عمق دفن f(L)" onerror="this.src='trend_fL_li.png'">
+                    <div class="visual-caption">شکل ۴-۲: رفتار صعودی یکنواخت و اکید تابع عمق دفن f(L) در پایش حرارتی با فیبر نوری [Li et al.]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                رفتار اکیداً صعودی تابع $f(L)$ نگاشت یک‌به‌یک دما به عمق را اثبات کرده و امکان پایش برخط عمق دفن با فیبر نوری را فراهم می‌سازد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 17: NDT Systems Benchmark
+             ========================================== -->
+        <section class="slide" id="slide-17" data-category="سامانه‌های NDT">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">مقایسه تطبیقی سامانه‌های پایش وضعیت و ارزیابی غیرمخرب</h2>
+                <span class="slide-subtitle">فصل چهارم — صفحات ۵۰ الی ۵۲ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid" style="grid-template-columns: 1fr;">
+                <div class="card">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>فناوری پایش</th>
+                                <th>کمیت تحت اندازه‌گیری</th>
+                                <th>تفکیک مکانی</th>
+                                <th>برد پوشش</th>
+                                <th>کابل قدرت</th>
+                                <th>رویدادها و عیوب هدف</th>
+                                <th>محدودیت‌های کلیدی</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color: var(--accent-cyan);">DTS</strong></td>
+                                <td>توزیع دمای کابل (پراکندگی رامان)</td>
+                                <td>تا ۱/۲۲ متر</td>
+                                <td>تا ۱۰ کیلومتر</td>
+                                <td>مشروط</td>
+                                <td>نقاط داغ حرارتی، تخمین عمق ترانشه</td>
+                                <td>تأخیر حرارتی خاک؛ عدم حساسیت به ضربه آنی</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--accent-cyan);">DAS</strong></td>
+                                <td>ارتعاشات صوتی و کرنش دینامیکی</td>
+                                <td>تا ۱۰ متر</td>
+                                <td>تا ۱۰ کیلومتر</td>
+                                <td>مشروط</td>
+                                <td>ضربه لنگر، برخورد ترال، ارتعاشات گردابه (VIV)</td>
+                                <td>حجم فوق‌العاده سنگین داده؛ ریسک هشدار کاذب</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--accent-cyan);">DSS / BOTDR</strong></td>
+                                <td>کرنش استاتیک و دما (بریلوئن)</td>
+                                <td>در حد ۱ متر</td>
+                                <td>چند ده کیلومتر</td>
+                                <td>مشروط</td>
+                                <td>نشست بستر، خمش مداوم، دهانه‌های معلق</td>
+                                <td>جفت‌شدگی اثرات کرنش و دما (نیازمند تار آزاد)</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--accent-blue);">HFCT</strong></td>
+                                <td>پایش تخلیه جزئی (PD)</td>
+                                <td>نقطه حسگر</td>
+                                <td>سرکابل/مفصل</td>
+                                <td>اصلـی</td>
+                                <td>ریزجرقه و نقص عایقی پیش از شکست دی‌الکتریک</td>
+                                <td>محدود به نقاط اتصال پایانه و حوضچه‌های گذار</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--accent-blue);">Spread-Spectrum TDR</strong></td>
+                                <td>بازتاب‌سنجی طیف‌گسترده الکتریکی</td>
+                                <td>چند سانتی‌متر</td>
+                                <td>چند ده کیلومتر</td>
+                                <td>اصلـی</td>
+                                <td>خطای هادی، مدار باز، پارگی زره</td>
+                                <td><strong>قابلیت ویژه: پایش برخط کابل‌های برق‌دار زنده</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--text-muted);">ROV & SSS</strong></td>
+                                <td>سونار پویش جانبی و بازرسی بصری</td>
+                                <td>دسی‌متر تا متر</td>
+                                <td>پهنه روبش</td>
+                                <td>بله</td>
+                                <td>تأیید دهانه‌های معلق و موانع فیزیکی بستر</td>
+                                <td>هزینه بسیار بالای شناور؛ وابستگی شدید به جو</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                تلفیق حسگر DAS برای ضربات فیزیکی، DTS برای عمق ترانشه و TDR طیف‌گسترده برای خطوط زنده، سامانه جامع پایش برخط را شکل می‌دهد.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 18: Qualification Matrix
+             ========================================== -->
+        <section class="slide" id="slide-18" data-category="استانداردها و تست">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">ماتریس جامع آزمون‌های تایید صلاحیت کابل‌های قدرت</h2>
+                <span class="slide-subtitle">فصل پنجم — صفحات ۵۶ الی ۶۰ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-40-60">
+                <div class="card">
+                    <div class="card-header"><span>تکامل کدهای اختصاصی کابل</span><span class="badge-academic">ABS 2026</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>گذار ساختاری:</strong> خروج از کدهای خط لوله و پذیرش مراجع کابل‌محور DNV-ST-0359، استاندارد نوین دفتر رده‌بندی آمریکا <strong>ABS 2026</strong> و پیش‌نویس BS 10009.</li>
+                        <li><strong>مدیریت کیفیت و بازرسی شخص ثالث:</strong> ممیزی بازرسان مستقل در ایستگاه‌های شاهد (Witness) و توقف (Hold Points) در کارخانه و شناور لای‌گذار.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>ماتریس آزمون‌های صلاحیت کابل (جدول ۵-۲ پایان‌نامه)</span></div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>رده آزمون</th>
+                                <th>استاندارد مرجع</th>
+                                <th>شاخص‌ها و آزمون‌های کلیدی</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>پیش‌صلاحیت (PQ)</strong></td>
+                                <td>CIGRÉ TB 490/496</td>
+                                <td><strong>۱ سال کارکرد پیوسته (۸۷۶۰ ساعت)</strong> با ولتاژ ۱/۷ برابر نامی و چرخه‌های حرارتی روزانه</td>
+                            </tr>
+                            <tr>
+                                <td><strong>آزمون نوعی مکانیکی</strong></td>
+                                <td>CIGRÉ TB 623 / IEC 63026</td>
+                                <td>خمش تحت کشش روی چرخ، خردایش جانبی تنشنر، نفوذ آب هیدرواستاتیک به مدت ۱۰ روز</td>
+                            </tr>
+                            <tr>
+                                <td><strong>آزمون نوعی الکتریکی</strong></td>
+                                <td>IEC 60840 / IEC 62067</td>
+                                <td>تخلیه جزئی (PD &lt; 2pC)، چرخه‌های بار حرارتی، ضربه صاعقه</td>
+                            </tr>
+                            <tr>
+                                <td><strong>آزمون خطوط دینامیک</strong></td>
+                                <td>API 17E / CIGRÉ TB 862</td>
+                                <td>خستگی نوسانی تمام‌مقیاس، آزمون سایش و پیچش</td>
+                            </tr>
+                            <tr>
+                                <td><strong>تست پس از نصب در سایت</strong></td>
+                                <td>IEC 60229 / ABS 2026</td>
+                                <td>آزمون ولتاژ رزونانس AC در سایت، <strong>تست ۱۰ کیلوولت DC غلاف خارجی</strong>، تست بی‌باری ۲۴ ساعته</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                ماتریس جامع استخراج‌شده از استانداردهای ۲۰۲۶، تضمین‌کننده کیفیت و بقای عملیاتی کابل برای عمر مفید حداقل ۴۰ سال در دریاست.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 19: Lead-Free Cable Future
+             ========================================== -->
+        <section class="slide" id="slide-19" data-category="فناوری‌های نوین">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">چشم‌انداز توسعه فناوری: کابل‌های دینامیک بدون سرب HPTE</h2>
+                <span class="slide-subtitle">فصل پنجم — صفحات ۶۱ الی ۶۲ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-55-45">
+                <div class="card">
+                    <div class="card-header"><span>تحول در متالورژی کابل‌های شناور</span><span class="badge-academic">HPTE Polymer</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>نارسایی غلاف سربی:</strong> جرم سنگین، خزش متالورژیکی و ضعف شدید در برابر خستگی ناشی از امواج در توربین‌های شناور.</li>
+                        <li><strong>جایگزینی با HPTE:</strong> الاستومرهای ترموپلاستیک کارایی بالا بر پایه کوپلیمرهای پلی‌پروپیلن یا پلی‌یورتان گرماپلاستیک.</li>
+                        <li><strong>لایه جاذب رطوبت الاستومری (Absorbent Layer):</strong> مهار نفوذ شعاعی آب بدون نیاز به غلاف فلزی سنگین و شکننده.</li>
+                        <li><strong>دستاوردهای عملیاتی:</strong> کاهش چشمگیر وزن واحد طول کابل معلق در آب، افزایش چندبرابری عمر خستگی FLS و حذف کامل گاززدایی در ساخت.</li>
+                    </ul>
+                    <div class="card-header" style="margin-top: 8px;"><span>افق‌های معماری سیستم‌های فراساحل</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>هاب‌های انرژی شناور:</strong> جمع‌آوری توان توربین‌ها در اعماق و ارسال یکپارچه با کابل صادراتی واحد.</li>
+                        <li><strong>شارژ القایی زیرسطحی:</strong> شارژ بی‌سیم ربات‌های خودمختار (AUV) مستقیماً از بستر شبکه کابل.</li>
+                    </ul>
+                </div>
+
+                <div class="visual-box">
+                    <img src="images/lead_free_absorbent_cable.png" alt="شکل ۵-۱: مقطع کابل دینامیک بدون سرب" onerror="this.src='lead_free_absorbent_cable.png'">
+                    <div class="visual-caption">شکل ۵-۱: طرح شماتیک مقطع کابل‌های پیشرفته بدون سرب دینامیک با لایه جذب رطوبت الاستومری [Resner & Paszkiewicz]</div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                جایگزینی غلاف‌های سربی با الاستومرهای پیشرفته HPTE و لایه جاذب رطوبت، تحول اصلی در افزایش عمر خستگی کابل‌های شناور است.
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 20: Conclusions & Future Works
+             ========================================== -->
+        <section class="slide" id="slide-20" data-category="نتیجه‌گیری">
+            <div class="slide-title-bar">
+                <h2 class="slide-title">جمع‌بندی دستاوردهای پژوهش و پیشنهادات آتی</h2>
+                <span class="slide-subtitle">فصل پنجم — صفحات ۶۲ الی ۶۳ پایان‌نامه</span>
+            </div>
+            <div class="slide-content-grid grid-2col-balanced">
+                <div class="card">
+                    <div class="card-header"><span>دستاوردهای بنیادین پایان‌نامه</span><span class="badge-academic">Conclusions</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>حل ریاضی مقطع:</strong> استخراج تئوری کوستلو، اثبات آستانه لغزش $0.00027\text{ rad/mm}$ و استخراج MBR و SWP بر پایه MecLim II.</li>
+                        <li><strong>نوآوری زنجیرواره دوگانه:</strong> حذف خطای محاسباتی ۵۵/۴۶ درصدی MBR نقطه فرود بارج در آب‌های کم‌عمق ساحلی.</li>
+                        <li><strong>مدل‌سازی هوشمند کشش:</strong> تدوین رابطه تجربی برنامه‌نویسی ژنتیک (GP) با خطای ناچیز ۴/۵۱٪ نسبت به OrcaFlex.</li>
+                        <li><strong>اصلاح پارادایم پایداری بستر:</strong> اثبات فیزیک تهویه دهانه در COREstab (کاهش ۹۰٪ برآ) و رد چگالی ناممکن ۱۴ در DNV-RP-F109.</li>
+                        <li><strong>پایش برخط ترانشه:</strong> اثبات یکنوایی صعودی تابع $f(L)$ در IEC 60853-2 و معکوس‌سازی حرارتی با سنسورهای فیبر نوری DTS.</li>
+                        <li><strong>استانداردسازی جامع:</strong> تدوین ماتریس آزمون‌های صلاحیت کابل منطبق بر کد نوین ABS 2026.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><span>پیشنهادات برای تحقیقات آتی</span><span class="badge-academic">Future Works</span></div>
+                    <ul class="academic-bullets">
+                        <li><strong>مدل‌سازی CFD چندفازی بستر متحرک:</strong> توسعه مدل‌های دینامیک سیالات محاسباتی جهت شبیه‌سازی آشفتگی فرسایش رسوبات و فرآیند زمانی خوددفنی کابل تحت میدان امواج تصادفی و جریان‌های متقاطع.</li>
+                        <li><strong>المان محدود چندمیدانی کوپل‌شده (Multiphysics FEA):</strong> تدوین مدل‌های سه‌بعدی کوپل‌شده الکتریکی-حرارتی-سازه‌ای جهت ارزیابی هم‌زمان اثر تلفات ژول، تنش‌های حرارتی متناوب و عمر خستگی کابل‌های دینامیک شناور.</li>
+                    </ul>
+                    <div class="metric-banner" style="margin-top: 15px;">
+                        <div>
+                            <div class="metric-title" style="color: #fff;">صمیمانه از توجه و شکیبایی هیئت محترم داوران سپاسگزارم</div>
+                            <small style="color: var(--text-muted);">پایان ارائه — آماده پاسخگویی به پرسش‌های تخصصی اساتید گرامی</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="key-takeaway">
+                رساله با شکستن پارادایم نادرست خطوط لوله صلب و ارائه حل‌های دقیق زنجیرواره دوگانه، پایداری COREstab و پایش DTS، چارچوب استانداردهای ۲۰۲۶ را محقق ساخت.
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <footer class="deck-footer">
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+            محمدمهدی دارائی — دانشگاه صنعتی امیرکبیر
+        </div>
+        
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="presentation-progress"></div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn-nav" id="btn-prev" onclick="prevSlide()">قبلی (◄)</button>
+            <span class="counter-badge" id="slide-counter">1 / 20</span>
+            <button class="btn-nav" id="btn-next" onclick="nextSlide()">بعدی (►)</button>
+            <button class="btn-nav" style="margin-right: 10px;" onclick="toggleFullScreen()">تمام‌صفحه (F)</button>
+        </div>
+    </footer>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 20;
+
+    function updateSlide() {
+        document.querySelectorAll('.slide').forEach((slide, index) => {
+            slide.classList.remove('active');
+            if (index + 1 === currentSlide) {
+                slide.classList.add('active');
+                const category = slide.getAttribute('data-category');
+                if (category) {
+                    document.getElementById('current-slide-category').textContent = category;
+                }
+            }
+        });
+
+        document.getElementById('slide-counter').textContent = `${currentSlide} / ${totalSlides}`;
+        const progressPercent = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+        document.getElementById('presentation-progress').style.width = `${progressPercent}%`;
+
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise();
+        }
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides) {
+            currentSlide++;
+            updateSlide();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 1) {
+            currentSlide--;
+            updateSlide();
+        }
+    }
+
+    function goToSlide(n) {
+        if (n >= 1 && n <= totalSlides) {
+            currentSlide = n;
+            updateSlide();
+        }
+    }
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                alert(`Error entering fullscreen: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        switch (event.key) {
+            case 'ArrowLeft':
+            case 'ArrowDown':
+            case 'PageDown':
+            case ' ':
+                nextSlide();
+                break;
+            case 'ArrowRight':
+            case 'ArrowUp':
+            case 'PageUp':
+                prevSlide();
+                break;
+            case 'Home':
+                goToSlide(1);
+                break;
+            case 'End':
+                goToSlide(totalSlides);
+                break;
+            case 'f':
+            case 'F':
+                toggleFullScreen();
+                break;
+        }
+    });
+
+    updateSlide();
+</script>
+
+</body>
+</html>
